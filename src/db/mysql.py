@@ -3,26 +3,27 @@ from fabric.api import cd, run
 from core import ServiceNotFound
 from .base import BaseDBTasks
 
-class MongoServiceNotFound(Exception):
+
+class MySQLServiceNotFound(Exception):
     pass
 
-class MongoDB(BaseDBTasks):
+class MySQL(BaseDBTasks):
     
     def __init__(self):
         try:
-            super(MongoDB, self).__init__('mongodb')
+            super(MySQL, self).__init__('mysql')
         except ServiceNotFound:
-            raise MongoServiceNotFound
+            raise MySQLServiceNotFound
 
     def dump_to_fs(self):
-        super(MongoDB, self).dump_to_fs()
-
+        super(MySQL, self).dump_to_fs()
         with cd(self.backup_folder):
             # First dump the db
-            run('mongodump')
+            run('mysqldump --all-databases > mysqldump.sql')
             
             # Then nicely tar it up
-            self._tarup_dump('dump')
+            self._tarup_dump('mysqldump.sql')
 
             # Clean up every thing except the tared file
-            run('rm -rf dump')
+            run('rm -rf mysqldump.sql')
+
