@@ -1,31 +1,28 @@
 from configobj import ConfigObj
 from fabric.api import cd, run
 
-
-def config_to_env(reponame, filename='fab.cfg'):
-
-    config = ConfigObj(filename)
-    return config['repos'][reponame]
+from .base import FabRepo
 
 
-class GitRepo(object):
+class GitRepo(FabRepo):
 
     def __init__(self, reponame):
-        config = config_to_env(reponame)
-        self.local_folder = config.get('local_folder')
-        self.remote_url = config.get('remote_url')
-        self.repo_name = config.get('repo_name')
+        super(GitRepo, self).__init__(reponame)
+
+    def is_repo(self):
+        self._attrs_not_exist("local_folder", "repo_name")
 
     def clone(self):
+        self._attrs_not_exist("local_folder", "remote_url")
         with cd(self.local_folder):
             cmd = "git clone %s" % self.remote_url
             run(cmd)
-
+            
     def pull(self):
+        self._attrs_not_exist("local_folder", "repo_name")
         lrepo = self.local_folder + '/' + self.repo_name
         with cd(lrepo):
             run('git pull')
-
-    def delete(self):
-        lrepo = self.local_folder + "/" + self.repo_name
-        run("rm -rf %s" % lrepo)
+        
+                    
+                
