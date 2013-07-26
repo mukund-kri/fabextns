@@ -14,6 +14,7 @@ class GitRepo(FabRepo):
 
     def clone(self):
         self._attrs_not_exist("local_folder", "remote_url")
+        run('mkdir -p %s' % self.local_folder)
         with cd(self.local_folder):
             cmd = "git clone %s" % self.remote_url
             run(cmd)

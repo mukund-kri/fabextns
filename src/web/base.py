@@ -8,6 +8,7 @@ these two steps.
 
 from datetime import datetime
 from fabric.api import run
+from fabric.contrib.files import *
 
 class BaseWebFab(object):
     
@@ -22,7 +23,8 @@ class BaseWebFab(object):
         dt_format = '%Y.%m.%d-%H.%M'
         bkp_target = '%s/bkp.%s' % (self.web_bkp_folder, 
                                     datetime.now().strftime(dt_format))
-        run('mv %s %s' % (self.srv_folder, bkp_target))
+        if exists(self.srv_folder):
+            run('mv %s %s' % (self.srv_folder, bkp_target))
         
     def copy_code(self):
         run('cp -r %s %s' % (self.src_folder, self.srv_folder))
