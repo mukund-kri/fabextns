@@ -3,8 +3,10 @@ from fabric.api import cd, run
 from core import ServiceNotFound
 from .base import BaseDBTasks
 
+
 class MongoServiceNotFound(Exception):
     pass
+
 
 class MongoDB(BaseDBTasks):
     

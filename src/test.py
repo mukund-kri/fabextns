@@ -4,6 +4,12 @@ from db import PostgresFab, PostgresServiceNotFound
 
 from config import config_to_env
 from core import *
+from fabric.api import env
+
+
+env.hosts = ['localhost']
+env.user = 'deploy'
+env.password = 'deploy'
 
 
 def test_mongo():
@@ -13,6 +19,7 @@ def test_mongo():
         # mongo.stop()
         # mongo.start()
         mongo.dump_to_fs()
+        mongo.cleanup_dbdumps()
     
     except MongoServiceNotFound:
         print(red("Could not find the Mongo serice. Perhaps not installed?"))
@@ -72,6 +79,6 @@ def test():
     # django.deploy()
 
 
-    test_scm()
+    test_mongo()
 
 

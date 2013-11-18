@@ -1,4 +1,3 @@
-from configobj import ConfigObj
 from fabric.api import cd, run
 from fabric.contrib.files import *
 

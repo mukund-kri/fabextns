@@ -1,5 +1,5 @@
-from configobj import ConfigObj
 from fabric.api import cd, run
+
 
 class ConfigNotDefinedError(Exception):
     

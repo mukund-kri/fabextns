@@ -1,11 +1,11 @@
-from configobj import ConfigObj
+import yaml
 from fabric.api import env 
 
 
-def config_to_env(filename='fab.cfg'):
+def config_to_env(filename='fab.yml'):
 
-    config = ConfigObj(filename)
-    db_cfg = config['db']
-    env['BACKUP_FOLDER'] = db_cfg.get('backup.folder')
+    config = yaml.load(file(filename))
+    print config
+    env['BACKUP_FOLDER'] = config.get('backup_folder', '/tmp/bkp')
 
     
