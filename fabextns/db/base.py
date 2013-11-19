@@ -3,30 +3,21 @@ from datetime import datetime
 from fabric.api import env, run
 from fabric.context_managers import cd
 
-from core.service import Service
+from fabextns.core.service import Service
 
-
-class BackupFolderNotDefined(Exception):
-    pass
 
 
 class BaseDBTasks(Service):
     
     def __init__(self, name):
-        super(BaseDBTasks, self).__init__(name)
-        
-        self.backup_folder = env.get('BACKUP_FOLDER', '/tmp/bkp')
-        if self.backup_folder:
-            run('mkdir -p %s' % self.backup_folder)
-        
-    def dump_to_fs(self):
-        if self.backup_folder:
-            run('mkdir -p %s' % self.backup_folder)
-        else:
-            print("Backup folder not defined in config")
-            raise BackupFolderNotDefined
+        super(BaseDBTasks, self).__init__(name)        
+        self.backup_folder = env.config['backup_folder']
+        self.stage_folder = env.config['stage_folder']
 
-    def restore_from_fs(self):
+    def dump_to_fs(self): 
+        run('mkdir -p %s' % self.backup_folder)
+
+    def restore_from_tar(self, tar_file):
         # Select the dump to restore from. Delete the db/s then restore from
         # dump. This is db specific so it should be in the derived class. Not
         # here.
@@ -49,3 +40,4 @@ class BaseDBTasks(Service):
         dt_format = '%Y.%m.%d-%H.%M'
         tarfile = 'dump.%s.tar.bz' % datetime.now().strftime(dt_format)
         run('tar -cjvf %s %s' % (tarfile, dumpfile))
+        return tarfile

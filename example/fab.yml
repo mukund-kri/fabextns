@@ -1,0 +1,7 @@
+stage_folder: ~/stage
+backup_folder: /tmp/bkp
+
+mongo:
+  dbs: 
+    - test
+    - html-course

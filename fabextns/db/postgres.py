@@ -1,10 +1,12 @@
 from fabric.api import cd, run, sudo
 
-from core import ServiceNotFound
+from fabextns.core import ServiceNotFound
 from .base import BaseDBTasks
+
 
 class PostgresServiceNotFound(Exception):
     pass
+
 
 class PostgresFab(BaseDBTasks):
     

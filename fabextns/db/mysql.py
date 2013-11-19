@@ -1,6 +1,6 @@
 from fabric.api import cd, run
 
-from core import ServiceNotFound
+from fabextns.core import ServiceNotFound
 from .base import BaseDBTasks
 
 
