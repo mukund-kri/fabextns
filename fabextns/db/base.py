@@ -38,6 +38,6 @@ class BaseDBTasks(Service):
 
     def _tarup_dump(self, dumpfile):
         dt_format = '%Y.%m.%d-%H.%M'
-        tarfile = 'dump.%s.tar.bz' % datetime.now().strftime(dt_format)
+        tarfile = '%s.%s.tar.bz' % (dumpfile, datetime.now().strftime(dt_format))
         run('tar -cjvf %s %s' % (tarfile, dumpfile))
         return tarfile

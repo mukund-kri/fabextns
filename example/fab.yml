@@ -5,3 +5,10 @@ mongo:
   dbs: 
     - test
     - html-course
+
+mysql:
+  user: mukund
+  password: 
+  dbs:
+   - test
+
