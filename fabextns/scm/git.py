@@ -1,9 +1,9 @@
 from fabric.api import cd, run
 
-from .base import FabRepo
+from .base import BaseRepo
 
 
-class GitRepo(FabRepo):
+class GitRepo(BaseRepo):
 
     def __init__(self, reponame):
         super(GitRepo, self).__init__(reponame)

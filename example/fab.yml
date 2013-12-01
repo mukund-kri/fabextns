@@ -1,5 +1,6 @@
 stage_folder: ~/stage
 backup_folder: /tmp/bkp
+srv_folder: /srv/flask
 
 mongo:
   dbs: 
@@ -7,6 +8,12 @@ mongo:
     - html-course
 
 mysql:
+  user: mukund
+  password: 
+  dbs:
+   - test
+
+postgres:
   user: mukund
   password: 
   dbs:

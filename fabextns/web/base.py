@@ -7,27 +7,31 @@ these two steps.
 ''' 
 
 from datetime import datetime
-from fabric.api import run
+from fabric.api import run, env
 from fabric.contrib.files import *
+
+
+# config parameters required for any web app deployment
+
 
 class BaseWebFab(object):
     
-    def __init__(self, src_folder, srv_folder):
-        self.src_folder = src_folder
-        self.srv_folder = srv_folder
-
-        self.read_from_config()
-        self.configure()
+    def __init__(self, repo_name, path_in_repo):
+        self.stage_folder = env.config['stage_folder']
+        self.backup_folder = env.config['backup_folder']
+        self.srv_folder = env.config['srv_folder']
+        self.src_folder = os.path.join(self.stage_folder, repo_name, path_in_repo)
 
     def backup(self):
         dt_format = '%Y.%m.%d-%H.%M'
-        bkp_target = '%s/bkp.%s' % (self.web_bkp_folder, 
+        bkp_target = '%s/bkp.%s' % (self.backup_folder, 
                                     datetime.now().strftime(dt_format))
         if exists(self.srv_folder):
             run('mv %s %s' % (self.srv_folder, bkp_target))
         
     def copy_code(self):
-        run('cp -r %s %s' % (self.src_folder, self.srv_folder))
+        run('mkdir -p %s' % self.srv_folder)
+        run('cp -r %s/* %s' % (self.src_folder, self.srv_folder))
 
     def configure(self):
         pass

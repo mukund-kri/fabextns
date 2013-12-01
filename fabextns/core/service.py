@@ -3,9 +3,6 @@ from fabric.colors import green, red
 from StringIO import StringIO
 import re
 
-env.host = ['localhost']
-env.password = 'mukund'
-
 
 class ServiceNotFound(Exception):
     pass
@@ -36,6 +33,11 @@ class Service(object):
         with settings(warn_only=True):
             sudo("service %s start" % self.name)
 
+    def restart(self):
+        with settings(warn_only=True):
+            sudo("service %s restart" % self.name)
 
+
+    
 
 

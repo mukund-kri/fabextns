@@ -1,15 +1,23 @@
-from fabric.api import cd, run
+from fabric.api import cd, run, env
+from voluptuous import Schema, Required
 
 
-class ConfigNotDefinedError(Exception):
-    
-    def __init__(self, message=""):
-        Exception.__init__(self, message)
+schema = Schema({
+        Required('stage_folder'): str,
+        Required('srv_folder'): str,
+        Required('backup_folder'): str,
+        }, extra=True)
 
-class FabRepo(object):
+class BaseRepo(object):
 
-    def __init__(self, reponame):
-        self.reponame = reponame
+    def __init__(self, name, url):
+        schema(env.config)
+        self.name = name
+        self.url = url
+
+        self.stage_folder = env.config['stage_folder']
+        self.srv_folder = env.config['srv_folder']
+        self.backup_folder = env.config['backup_folder']
 
     def is_repo(self):
         raise NotImplementedError

@@ -1,21 +1,23 @@
 from fabric.api import cd, run
 from fabric.contrib.files import *
 
-from .base import FabRepo
+from .base import BaseRepo
 
-class MercurialRepo(FabRepo):
+class MercurialRepo(BaseRepo):
 
-    def __init__(self, reponame):
-        super(MercurialRepo, self).__init__(reponame)
+    def __init__(self, name, url):
+        super(MercurialRepo, self).__init__(name, url)
+        
 
     def clone(self):
-        run('mkdir -p %s' % self.local_folder)
-        with cd(self.local_folder):
-            cmd = "hg clone %s" % self.remote_url
+        
+        run('mkdir -p %s' % self.stage_folder)
+        with cd(self.stage_folder):
+            cmd = "hg clone %s" % self.url
             run(cmd)
 
     def pull(self):
-        lrepo = self.local_folder + '/' + self.repo_name
+        lrepo = self.stage_folder + '/' + self.name
         if not exists(lrepo):
             self.clone()
         else:
